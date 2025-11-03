@@ -1,0 +1,28 @@
+.employee-dashboard {
+  padding: 3rem;
+  text-align: center;
+  background: linear-gradient(to top right, #00838f, #26c6da);
+  min-height: 100vh;
+  color: white;
+
+  .employee-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .action-card {
+    background: white;
+    color: #006064;
+    border-radius: 10px;
+    padding: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+  }
+}

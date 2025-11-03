@@ -1,0 +1,28 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Tableau de Bord RH 👩‍💼</h1>
+    <p>Vue d’ensemble de la gestion du personnel</p>
+  </div>
+
+  <div class="stats-grid">
+    <mat-card class="stat-card">
+      <h2>👥 Employés</h2>
+      <p>{{ totalEmployees }}</p>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <h2>🏢 Départements</h2>
+      <p>{{ totalDepartments }}</p>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <h2>🏝️ Congés en attente</h2>
+      <p>{{ pendingLeaves }}</p>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <h2>💰 Fiches de paie</h2>
+      <p>{{ totalPaies }}</p>
+    </mat-card>
+  </div>
+</div>

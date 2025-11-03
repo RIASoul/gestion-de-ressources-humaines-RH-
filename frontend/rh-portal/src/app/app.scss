@@ -1,0 +1,15 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  color: #e2e8f0;
+}
+
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+}
