@@ -1,11 +1,27 @@
 import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+
+interface NavItem {
+  label: string;
+  icon: string;
+  route: string;
+}
 
 @Component({
   selector: 'app-sidebar',
-  imports: [],
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive, MatListModule, MatIconModule],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.scss',
+  styleUrls: ['./sidebar.scss']
 })
-export class Sidebar {
-
+export class SidebarComponent {
+  readonly adminNav: NavItem[] = [
+    { label: 'Tableau de bord', icon: 'dashboard', route: '/admin/dashboard' },
+    { label: 'Employés', icon: 'group', route: '/admin/employees' },
+    { label: 'Congés', icon: 'event', route: '/admin/conges' },
+    { label: 'Validation des congés', icon: 'task_alt', route: '/admin/conges/validation' },
+    { label: 'Paie', icon: 'paid', route: '/admin/paie' }
+  ];
 }

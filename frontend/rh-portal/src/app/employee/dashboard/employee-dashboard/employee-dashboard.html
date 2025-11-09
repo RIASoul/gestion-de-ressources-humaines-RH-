@@ -1,10 +1,121 @@
-<div class="employee-dashboard">
-  <h1>Bienvenue {{ userName }} 👋</h1>
+<div class="employee-dashboard" *ngIf="employee() as profil; else loading">
+  <header>
+    <div>
+      <h1>Bonjour {{ profil.firstName }} {{ profil.lastName }} 👋</h1>
+      <p>Retrouvez vos informations personnelles, congés et paie en un clin d'œil.</p>
+    </div>
+    <button mat-stroked-button color="primary" [routerLink]="'/employee/profile'">
+      <mat-icon>badge</mat-icon>
+      Voir mon profil
+    </button>
+  </header>
 
-  <div class="employee-actions">
-    <mat-card routerLink="/employee/profile" class="action-card">👤 Mon Profil</mat-card>
-    <mat-card routerLink="/employee/mes-conges" class="action-card">🏝️ Mes Congés</mat-card>
-    <mat-card routerLink="/employee/mes-paie" class="action-card">💰 Ma Paie</mat-card>
-    <mat-card routerLink="/employee/notifications" class="action-card">🔔 Notifications</mat-card>
+  <section class="summary-cards">
+    <mat-card>
+      <mat-icon>event</mat-icon>
+      <div>
+        <span class="label">Congés en attente</span>
+        <span class="value">{{ pendingConges().length }}</span>
+      </div>
+    </mat-card>
+    <mat-card>
+      <mat-icon>work_history</mat-icon>
+      <div>
+        <span class="label">Poste</span>
+        <span class="value">{{ profil.position }}</span>
+        <small>{{ profil.departmentName || 'Département non renseigné' }}</small>
+      </div>
+    </mat-card>
+    <mat-card>
+      <mat-icon>payments</mat-icon>
+      <div>
+        <span class="label">Dernier net à payer</span>
+        <ng-container *ngIf="lastFichePaie() as fiche; else noPay">
+          <span class="value">{{ fiche.salaireNet | number: '1.0-0' }} FCFA</span>
+        </ng-container>
+      </div>
+    </mat-card>
+  </section>
+
+  <ng-template #noPay>
+    <span class="value">Non disponible</span>
+  </ng-template>
+
+  <section class="shortcuts">
+    <mat-card class="shortcut" routerLink="/employee/mes-conges">
+      <mat-icon>beach_access</mat-icon>
+      <div>
+        <h3>Mes congés</h3>
+        <p>Consulter mon solde et mes demandes en cours.</p>
+      </div>
+      <mat-icon>chevron_right</mat-icon>
+    </mat-card>
+    <mat-card class="shortcut" routerLink="/employee/mes-paie">
+      <mat-icon>receipt_long</mat-icon>
+      <div>
+        <h3>Mes bulletins</h3>
+        <p>Télécharger mes fiches de paie et attestations.</p>
+      </div>
+      <mat-icon>chevron_right</mat-icon>
+    </mat-card>
+    <mat-card class="shortcut" routerLink="/employee/profile">
+      <mat-icon>account_circle</mat-icon>
+      <div>
+        <h3>Mon dossier</h3>
+        <p>Mettre à jour mes coordonnées personnelles.</p>
+      </div>
+      <mat-icon>chevron_right</mat-icon>
+    </mat-card>
+  </section>
+
+  <section class="recent-activity">
+    <mat-card class="conges-card">
+      <div class="card-header">
+        <h2>Derniers congés</h2>
+        <button mat-button color="primary" [routerLink]="'/employee/mes-conges'">Voir tout</button>
+      </div>
+      <ng-container *ngIf="conges().length; else noConge">
+        <div class="conge-item" *ngFor="let conge of conges() | slice:0:4">
+          <div>
+            <strong>{{ conge.typeConge }}</strong>
+            <span>{{ conge.dateDebut | date: 'dd MMM yyyy' }} → {{ conge.dateFin | date: 'dd MMM yyyy' }}</span>
+          </div>
+          <span class="status" [class.pending]="conge.statut === 'EN_ATTENTE'" [class.approved]="conge.statut === 'APPROUVE'" [class.refused]="conge.statut === 'REFUSE'">
+            {{ conge.statut | titlecase }}
+          </span>
+        </div>
+      </ng-container>
+    </mat-card>
+
+    <mat-card class="paie-card">
+      <div class="card-header">
+        <h2>Dernière fiche de paie</h2>
+        <button mat-button color="primary" [routerLink]="'/employee/mes-paie'">Consulter</button>
+      </div>
+      <ng-container *ngIf="lastFichePaie() as fiche; else noFiche">
+        <p>Période : {{ fiche.periodePaie | date: 'MMMM yyyy' }}</p>
+        <p>Salaire net : {{ fiche.salaireNet | number: '1.0-0' }} FCFA</p>
+      </ng-container>
+    </mat-card>
+  </section>
+</div>
+
+<ng-template #noFiche>
+  <p class="info">Aucune fiche disponible.</p>
+</ng-template>
+
+<ng-template #noConge>
+  <p class="info">Aucun congé enregistré pour le moment.</p>
+</ng-template>
+
+<ng-template #loading>
+  <div class="loading-state">
+    <mat-progress-spinner diameter="48" mode="indeterminate"></mat-progress-spinner>
+    <p>Chargement de votre espace collaborateur...</p>
   </div>
+</ng-template>
+
+<div class="error-banner" *ngIf="error()">
+  <mat-icon>error_outline</mat-icon>
+  {{ error() }}
 </div>
