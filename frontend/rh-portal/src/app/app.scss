@@ -1,15 +1,31 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: "Inter", sans-serif;
-  background: linear-gradient(145deg, #1e293b, #0f172a);
-  color: #e2e8f0;
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #e8ecf6;
+  color: #1f2933;
+  font-family: 'Inter', 'Roboto', sans-serif;
 }
 
-.app-container {
+.app-shell {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100dvh;
+  flex-direction: column;
+}
+
+.app-body {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(180deg, #f5f7fb 0%, #ffffff 100%);
+}
+
+.app-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+}
+
+main {
+  flex: 1;
+  min-height: 100%;
 }

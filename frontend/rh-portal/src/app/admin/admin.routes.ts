@@ -5,7 +5,9 @@ import {
   EmployeeAddComponent,
   EmployeeEditComponent,
   CongeListComponent,
-  CongeValidationComponent
+  CongeValidationComponent,
+  PaieListComponent,
+  PaieEditComponent
 } from './index';
 
 export const routes: Routes = [
@@ -16,4 +18,6 @@ export const routes: Routes = [
   { path: 'employees/edit/:id', component: EmployeeEditComponent },
   { path: 'conges', component: CongeListComponent },
   { path: 'conges/validation', component: CongeValidationComponent },
+  { path: 'paie', component: PaieListComponent },
+  { path: 'paie/edit', component: PaieEditComponent }
 ];
