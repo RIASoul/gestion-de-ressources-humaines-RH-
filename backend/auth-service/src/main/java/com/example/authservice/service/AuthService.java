@@ -5,6 +5,7 @@ import com.example.authservice.dto.LoginRequest;
 import com.example.authservice.dto.RegisterRequest;
 import com.example.authservice.model.User;
 import com.example.authservice.repository.UserRepository;
+import com.example.authservice.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public AuthResponse register(RegisterRequest req) {
@@ -27,8 +29,11 @@ public class AuthService {
         u.setRole(req.getRole());
 
         User saved = userRepository.save(u);
-        // V1: pas de JWT -> token "no-token"
-        return new AuthResponse("no-token", saved.getId(), saved.getName(), saved.getEmail(), saved.getRole());
+        
+        // Generate JWT token
+        String token = jwtUtil.generateToken(saved.getEmail(), saved.getId(), saved.getName(), saved.getRole().name());
+        
+        return new AuthResponse(token, saved.getId(), saved.getName(), saved.getEmail(), saved.getRole());
     }
 
     public AuthResponse login(LoginRequest req) {
@@ -37,6 +42,9 @@ public class AuthService {
         if (!encoder.matches(req.getPassword(), u.getPassword()))
             throw new RuntimeException("Mot de passe incorrect");
 
-        return new AuthResponse("no-token", u.getId(), u.getName(), u.getEmail(), u.getRole());
+        // Generate JWT token
+        String token = jwtUtil.generateToken(u.getEmail(), u.getId(), u.getName(), u.getRole().name());
+
+        return new AuthResponse(token, u.getId(), u.getName(), u.getEmail(), u.getRole());
     }
 }

@@ -34,14 +34,19 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.auth.login(this.loginForm.value).subscribe({
         next: (response) => {
-          const role = response.user?.role;
+          const role = response.role;
           if (role === 'ADMIN') {
             this.router.navigate(['/admin/dashboard']);
+          } else if (role === 'EMPLOYEE') {
+            this.router.navigate(['/employee/dashboard']);
           } else {
             this.router.navigate(['/employee/dashboard']);
           }
         },
-        error: (err) => alert('Erreur de connexion : ' + err.message)
+        error: (err) => {
+          console.error('Login error:', err);
+          alert('Erreur de connexion : ' + (err.error?.message || err.message || 'Erreur inconnue'));
+        }
       });
     }
   }

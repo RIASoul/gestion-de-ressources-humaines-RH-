@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { AppConfig } from '../../utils/app.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // ✅ Ton API Gateway redirige vers ton microservice Auth
-  private baseUrl = `${environment.apiUrl}/auth`;
+  // API Gateway endpoint
+  private baseUrl = AppConfig.endpoints.AUTH;
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,12 @@ export class AuthService {
       tap((response: any) => {
         if (response?.token) {
           localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify(response.user));
+          localStorage.setItem('user', JSON.stringify({
+            id: response.id,
+            name: response.name,
+            email: response.email,
+            role: response.role
+          }));
         }
       })
     );
