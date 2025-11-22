@@ -15,6 +15,9 @@ public class CorsConfig {
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
+        
+        // TODO: In production, replace "*" with specific origins
+        // Example: Collections.singletonList("https://yourdomain.com")
         corsConfig.setAllowedOrigins(Collections.singletonList("*"));
         corsConfig.setMaxAge(3600L);
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
